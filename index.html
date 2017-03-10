@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrapstyles.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    </style>
+    <title>my api excercise Random quote</title>
+   </head>
+
+  <body>
+    <h1>This is my random quote page!</h1>
+
+      <div id = "js-quote" > </div>
+    <script src= "https://code.jquery.com/jquery-3.1.1.min.js" > </script>
+
+    <script>
+      $(document).ready(function() {
+
+                      var quoteContainer = document.getElementById("js-quote");
+
+                      var quoteContent = "" ;
+
+        function getQuote() {
+// this VVVplace holder will delete the quote ater populated leaves value as null 
+          quoteContent = "";
+
+          $.ajax({
+                    url: 'http://quotzzy.co/api/quote',
+                    dataType: 'JSON',
+                    method:"GET",
+            success: function(quote) {
+            // console.log ("quote:,",quote);
+
+              quoteContent += "<h2>" + quote.text + "<h2>";
+
+              // if there is null for author it is false and we do not include the anchor tag to content in quote
+              if(quote.author){
+              quoteContent = '<a href="' + quote.author.wiki +
+              '" target="_blank">' + quote.author.name + '</a>';
+              }
+
+              // this is the quote container
+              quoteContainer.innerHTML = quoteContent;
+            },
+                error:function(){
+              console.log("something went wrong.");
+
+
+          }
+        });
+       }
+          setInterval(getQuote, 3000);
+});
+
+
+      </script>
+
+  </body>
+</html>
